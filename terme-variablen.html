@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terme & Variablen – Interaktives Arbeitsblatt</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdf6ec;
+  --card: #ffffff;
+  --yellow: #fbbf24;
+  --orange: #f97316;
+  --teal: #14b8a6;
+  --teal-light: #ccfbf1;
+  --blue: #3b82f6;
+  --blue-light: #dbeafe;
+  --pink: #ec4899;
+  --pink-light: #fce7f3;
+  --green: #22c55e;
+  --green-light: #dcfce7;
+  --red: #ef4444;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --radius: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(251,191,36,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(20,184,166,0.10) 0%, transparent 50%);
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  padding: 28px 24px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 20px,
+    rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px
+  );
+}
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  letter-spacing: 1px;
+  position: relative;
+}
+header h1 span { color: var(--yellow); }
+header p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 6px;
+  position: relative;
+}
+
+/* ── NAVIGATION TABS ── */
+.tab-nav {
+  display: flex;
+  gap: 6px;
+  padding: 16px 16px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0;
+  padding: 10px 18px;
+  border: 2px solid var(--border);
+  background: white;
+  border-radius: 12px 12px 0 0;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.tab-btn:hover { color: var(--text); border-color: #cbd5e1; }
+.tab-btn.active {
+  background: white;
+  border-bottom-color: white;
+  color: var(--teal);
+  border-color: var(--teal);
+  border-bottom-color: white;
+}
+.tab-btn .num {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: currentColor;
+  color: white;
+  font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tab-btn.active .num { background: var(--teal); }
+
+/* ── MAIN CONTENT ── */
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+.section {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.badge {
+  font-size: 0.7rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-teal  { background: var(--teal-light); color: var(--teal); }
+.badge-blue  { background: var(--blue-light); color: var(--blue); }
+.badge-pink  { background: var(--pink-light); color: var(--pink); }
+.badge-green { background: var(--green-light); color: var(--green); }
+
+.info-box {
+  background: var(--blue-light);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+.info-box strong { color: var(--blue); }
+
+/* ── SECTION 1: WAS IST EINE VARIABLE? ── */
+.var-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+.var-slider-area {
+  flex: 1; min-width: 220px;
+}
+.var-slider-area label {
+  font-weight: 700; font-size: 0.9rem;
+  display: block; margin-bottom: 8px;
+}
+input[type=range] {
+  width: 100%; height: 6px;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, var(--teal) 0%, var(--teal) var(--pct, 40%), var(--border) var(--pct, 40%));
+  border-radius: 3px; outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--teal);
+  border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.var-value-big {
+  font-family: 'Fredoka One', cursive;
+  font-size: 3.5rem;
+  color: var(--teal);
+  line-height: 1;
+  margin-top: 8px;
+}
+.term-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 2; min-width: 280px;
+}
+.term-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s;
+}
+.term-row:hover { border-color: var(--teal); }
+.term-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: var(--muted);
+}
+.term-expr {
+  font-size: 1rem; font-weight: 700;
+  flex: 1;
+}
+.term-arrow { color: var(--muted); font-size: 1.2rem; }
+.term-result {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  min-width: 50px;
+  text-align: right;
+  transition: all 0.3s;
+}
+.tr-teal .term-result { color: var(--teal); }
+.tr-orange .term-result { color: var(--orange); }
+.tr-pink .term-result { color: var(--pink); }
+.tr-blue .term-result { color: var(--blue); }
+
+.highlight-x {
+  display: inline-block;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-weight: 800;
+  border-radius: 4px;
+  padding: 0 4px;
+  transition: all 0.2s;
+}
+.highlight-x.pulse {
+  animation: pulse 0.3s ease;
+}
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ── SECTION 2: MUSTER ── */
+.pattern-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.pattern-select-group {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.pat-btn {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  background: white;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--muted);
+}
+.pat-btn.active { border-color: var(--orange); color: var(--orange); background: #fff7ed; }
+
+.pattern-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+.pattern-visual {
+  flex: 1; min-width: 240px;
+  background: #f8fafc;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pattern-info {
+  flex: 1; min-width: 220px;
+}
+.term-display {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.term-display .td-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.term-display .td-formula {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  color: var(--yellow);
+}
+.term-display .td-formula .var-n { color: #fb923c; }
+.term-display .td-result {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 4px;
+}
+
+.n-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.n-table th, .n-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.n-table th {
+  background: var(--orange);
+  color: white;
+  font-weight: 700;
+}
+.n-table tr:nth-child(even) { background: #fafafa; }
+.n-table .active-row { background: #fff7ed; font-weight: 700; color: var(--orange); }
+
+/* Grid pattern cells */
+.grid-pattern { display: flex; flex-direction: column; gap: 3px; }
+.grid-row { display: flex; gap: 3px; }
+.grid-cell {
+  width: 18px; height: 18px;
+  border-radius: 3px;
+  transition: all 0.4s;
+}
+.cell-filled { background: var(--orange); }
+.cell-empty  { background: transparent; }
+.cell-new    { background: var(--teal); animation: popIn 0.3s ease; }
+@keyframes popIn {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Step/stair pattern */
+.step-labels { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+.step-label { font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+.dot-legend { width: 14px; height: 14px; border-radius: 3px; }
+
+/* Matchstick pattern */
+.match-canvas { display: block; }
+
+/* n-slider row */
+.n-control {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.n-control label { font-weight: 700; }
+.n-badge {
+  background: var(--orange);
+  color: white;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(249,115,22,0.4);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.n-control input[type=range] { flex: 1; min-width: 120px; }
+
+/* ── SECTION 3: TERME AUSWERTEN ── */
+.exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.ex-card {
+  background: #f8fafc;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.2s;
+}
+.ex-card:hover { border-color: #cbd5e1; }
+.ex-card.correct { border-color: var(--green); background: var(--green-light); }
+.ex-card.wrong   { border-color: var(--red);   background: #fee2e2; animation: shake 0.3s; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-6px); }
+  75%     { transform: translateX(6px); }
+}
+.ex-term {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  color: var(--blue);
+}
+.ex-given {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.ex-given span { font-weight: 700; color: var(--text); }
+.ex-input-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.ex-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  outline: none;
+  transition: all 0.2s;
+  background: white;
+}
+.ex-input:focus { border-color: var(--blue); }
+.ex-input.correct { border-color: var(--green); background: white; }
+.ex-input.wrong   { border-color: var(--red); }
+.ex-check-btn {
+  padding: 8px 14px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+.ex-check-btn:hover { background: #2563eb; transform: translateY(-1px); }
+.ex-feedback {
+  font-size: 0.8rem;
+  margin-top: 8px;
+  font-weight: 700;
+  min-height: 20px;
+}
+.ex-feedback.correct { color: var(--green); }
+.ex-feedback.wrong   { color: var(--red); }
+
+/* ── SECTION 4: MUSTER AUFSTELLEN ── */
+.match-section { margin-bottom: 24px; }
+.match-task {
+  background: #f8fafc;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: all 0.3s;
+}
+.match-task.solved { border-color: var(--green); background: var(--green-light); }
+.match-task-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.match-visual { flex-shrink: 0; }
+.match-question { flex: 1; min-width: 180px; }
+.match-question p { font-size: 0.88rem; line-height: 1.6; margin-bottom: 12px; }
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.opt-btn {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  background: white;
+  border-radius: 10px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text);
+}
+.opt-btn:hover { border-color: var(--orange); color: var(--orange); }
+.opt-btn.selected-correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.opt-btn.selected-wrong   { border-color: var(--red);   background: #fee2e2;            color: var(--red); }
+.opt-btn.reveal-correct   { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.match-explain {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid var(--green);
+  display: none;
+  line-height: 1.6;
+}
+.match-explain.show { display: block; }
+
+/* ── SECTION 5: QUIZ ── */
+.progress-bar-wrap {
+  background: var(--border);
+  border-radius: 20px;
+  height: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, var(--teal), var(--blue));
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+.quiz-question-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--border);
+  margin-bottom: 16px;
+}
+.quiz-q-num {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.quiz-q-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.quiz-opt {
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  background: white;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+.quiz-opt.correct { border-color: var(--green); background: var(--green-light); color: #166534; }
+.quiz-opt.wrong   { border-color: var(--red);   background: #fee2e2; color: #991b1b; }
+.quiz-opt:disabled { cursor: default; }
+
+.quiz-nav {
+  display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;
+}
+.btn-primary {
+  padding: 12px 28px;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #0d9488; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20,184,166,0.3); }
+.btn-primary:disabled { opacity: 0.4; transform: none; cursor: default; }
+
+.quiz-result {
+  text-align: center;
+  padding: 40px 20px;
+}
+.result-emoji { font-size: 4rem; margin-bottom: 16px; }
+.result-score {
+  font-family: 'Fredoka One', cursive;
+  font-size: 3rem;
+  color: var(--teal);
+}
+.result-msg { font-size: 1rem; color: var(--muted); margin-top: 8px; margin-bottom: 24px; }
+
+/* ── CHEATSHEET PANEL ── */
+.cheatsheet {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  color: white;
+}
+.cheatsheet h3 {
+  font-family: 'Fredoka One', cursive;
+  color: var(--yellow);
+  margin-bottom: 14px;
+  font-size: 1.1rem;
+}
+.def-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.def-item {
+  background: rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.def-item .def-word {
+  color: var(--yellow);
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+.def-item .def-desc {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.5;
+}
+.def-item .def-example {
+  font-family: 'Fredoka One', cursive;
+  color: #fb923c;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* ── SCORE CHIP ── */
+.score-chip {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--teal);
+  color: white;
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 20px rgba(20,184,166,0.4);
+  z-index: 100;
+  transition: all 0.3s;
+  display: flex; align-items: center; gap: 8px;
+}
+.score-chip .star { font-size: 1rem; }
+
+@media (max-width: 600px) {
+  .quiz-options { grid-template-columns: 1fr; }
+  .term-cards, .var-demo { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔢 <span>Terme</span> & Variablen</h1>
+  <p>Interaktives Arbeitsblatt · Klasse 7 · Mathematik</p>
+</header>
+
+<div class="content">
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showSection(0)"><span class="num">1</span> Was ist eine Variable?</button>
+    <button class="tab-btn" onclick="showSection(1)"><span class="num">2</span> Muster erkunden</button>
+    <button class="tab-btn" onclick="showSection(2)"><span class="num">3</span> Terme auswerten</button>
+    <button class="tab-btn" onclick="showSection(3)"><span class="num">4</span> Terme aufstellen</button>
+    <button class="tab-btn" onclick="showSection(4)"><span class="num">5</span> Quiz</button>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 1: WAS IST EINE VARIABLE? -->
+  <!-- ─────────────────────────────────────────────── -->
+  <div class="section active" id="sec-0">
+
+    <div class="cheatsheet" style="margin-top:16px;">
+      <h3>📖 Begriffe auf einen Blick</h3>
+      <div class="def-grid">
+        <div class="def-item">
+          <div class="def-word">Variable</div>
+          <div class="def-desc">Ein Buchstabe, der für eine unbekannte oder veränderliche Zahl steht.</div>
+          <div class="def-example">x, n, a, t …</div>
+        </div>
+        <div class="def-item">
+          <div class="def-word">Term</div>
+          <div class="def-desc">Ein Ausdruck aus Zahlen, Variablen und Rechenzeichen.</div>
+          <div class="def-example">3x + 5 &nbsp;|&nbsp; 2n − 1</div>
+        </div>
+        <div class="def-item">
+          <div class="def-word">Koeffizient</div>
+          <div class="def-desc">Die Zahl, mit der eine Variable multipliziert wird.</div>
+          <div class="def-example">In 4x ist 4 der Koeffizient</div>
+        </div>
+        <div class="def-item">
+          <div class="def-word">Termwert</div>
+          <div class="def-desc">Das Ergebnis, wenn man eine Zahl für die Variable einsetzt.</div>
+          <div class="def-example">3·2 + 1 = 7</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎮 Schieberegler-Demo <span class="badge badge-teal">Interaktiv</span></div>
+      <div class="info-box">
+        Stell dir vor, <strong>x</strong> ist wie ein Platzhalter in einem Rezept. Je nachdem, wie viele Portionen du kochst (= Wert von x), ändert sich die Menge der Zutaten. Schiebe den Regler und beobachte, was passiert!
+      </div>
+
+      <div class="var-demo">
+        <div class="var-slider-area">
+          <label>Wert der Variable <strong style="color:var(--teal)">x</strong></label>
+          <input type="range" id="var-slider" min="0" max="10" step="1" value="3"
+            oninput="updateVarDemo(this.value)">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-top:2px;">
+            <span>0</span><span>5</span><span>10</span>
+          </div>
+          <div>
+            <div style="font-size:0.85rem; color:var(--muted); margin-top:12px;">x =</div>
+            <div class="var-value-big" id="var-big">3</div>
+          </div>
+        </div>
+
+        <div class="term-cards">
+          <div class="term-row tr-teal">
+            <div class="term-label">Term 1</div>
+            <div class="term-expr">2 · <span class="highlight-x" id="hx1">x</span> + 1</div>
+            <div class="term-arrow">→</div>
+            <div class="term-result" id="tr1">7</div>
+          </div>
+          <div class="term-row tr-orange">
+            <div class="term-label">Term 2</div>
+            <div class="term-expr">3 · <span class="highlight-x" id="hx2">x</span> − 2</div>
+            <div class="term-arrow">→</div>
+            <div class="term-result" id="tr2">7</div>
+          </div>
+          <div class="term-row tr-pink">
+            <div class="term-label">Term 3</div>
+            <div class="term-expr"><span class="highlight-x" id="hx3">x</span>² + <span class="highlight-x" id="hx4">x</span></div>
+            <div class="term-arrow">→</div>
+            <div class="term-result" id="tr3">12</div>
+          </div>
+          <div class="term-row tr-blue">
+            <div class="term-label">Term 4</div>
+            <div class="term-expr">10 − <span class="highlight-x" id="hx5">x</span></div>
+            <div class="term-arrow">→</div>
+            <div class="term-result" id="tr4">7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💡 Merke dir das!</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:4px;">
+        <div style="background:#f0fdf4;border-radius:12px;padding:16px;border:2px solid #bbf7d0;">
+          <div style="font-weight:800;color:var(--green);margin-bottom:6px;">✅ Das ist ein Term:</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--text);">3x + 5 &nbsp;|&nbsp; 2n − 1 &nbsp;|&nbsp; a²</div>
+        </div>
+        <div style="background:#fff1f2;border-radius:12px;padding:16px;border:2px solid #fecdd3;">
+          <div style="font-weight:800;color:var(--red);margin-bottom:6px;">❌ Das ist kein Term:</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--text);">3x + &nbsp;|&nbsp; = 5 &nbsp;|&nbsp; +·2</div>
+        </div>
+        <div style="background:#eff6ff;border-radius:12px;padding:16px;border:2px solid #bfdbfe;">
+          <div style="font-weight:800;color:var(--blue);margin-bottom:6px;">🔵 Terme gleichsetzen:</div>
+          <div style="font-size:0.85rem;color:var(--text);line-height:1.6;">3x + 5 <strong>=</strong> 14 ist eine <strong>Gleichung</strong>, kein Term!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 2: MUSTER ERKUNDEN -->
+  <!-- ─────────────────────────────────────────────── -->
+  <div class="section" id="sec-1" style="margin-top:16px;">
+
+    <div class="card">
+      <div class="card-title">🔍 Muster erkunden <span class="badge badge-pink">Dynamisch</span></div>
+      <div class="info-box">
+        Viele Muster in der Mathematik lassen sich durch einen <strong>Term</strong> beschreiben. Wähle ein Muster und verschiebe <strong>n</strong>, um zu sehen, wie das Muster wächst und welcher Term dahintersteckt!
+      </div>
+
+      <div class="pattern-controls">
+        <strong style="font-size:0.9rem;">Muster wählen:</strong>
+        <div class="pattern-select-group">
+          <button class="pat-btn active" onclick="selectPattern('treppen')">🔷 Treppenmuster</button>
+          <button class="pat-btn" onclick="selectPattern('punkte')">🔵 Punktemuster</button>
+          <button class="pat-btn" onclick="selectPattern('rahmen')">🟥 Rahmenmuster</button>
+        </div>
+      </div>
+
+      <div class="n-control">
+        <label style="font-size:0.9rem;">n =</label>
+        <div class="n-badge" id="n-badge">3</div>
+        <input type="range" id="n-slider" min="1" max="6" step="1" value="3"
+          oninput="updatePattern(parseInt(this.value))" style="--pct:40%">
+        <span style="font-size:0.8rem;color:var(--muted)">1 … 6</span>
+      </div>
+
+      <div class="pattern-area">
+        <div class="pattern-visual">
+          <canvas id="pattern-canvas" width="300" height="200"></canvas>
+        </div>
+        <div class="pattern-info">
+          <div class="term-display">
+            <div class="td-label">Beschreibender Term</div>
+            <div class="td-formula" id="td-formula">T(n) = ½·n·(n+1)</div>
+            <div class="td-result" id="td-result">T(3) = 6</div>
+          </div>
+          <table class="n-table" id="n-table">
+            <thead><tr><th>n</th><th>Anzahl Felder</th></tr></thead>
+            <tbody id="n-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="pattern-explain" style="margin-top:16px;padding:16px;background:#fff7ed;border-radius:12px;border-left:4px solid var(--orange);font-size:0.88rem;line-height:1.7;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 3: TERME AUSWERTEN -->
+  <!-- ─────────────────────────────────────────────── -->
+  <div class="section" id="sec-2" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">🧮 Terme auswerten <span class="badge badge-blue">Üben</span></div>
+      <div class="info-box">
+        Setze den angegebenen Wert in den Term ein und berechne das Ergebnis. Tipp: Zuerst die Variable durch die Zahl ersetzen, dann ausrechnen!
+      </div>
+      <div class="exercise-grid" id="ex-grid"></div>
+    </div>
+    <div class="card" style="text-align:center;" id="ex-progress-card">
+      <div style="font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:6px;" id="ex-progress-text">0 von 8 gelöst</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="ex-progress-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 4: TERME AUFSTELLEN -->
+  <!-- ─────────────────────────────────────────────── -->
+  <div class="section" id="sec-3" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">🏗️ Terme aufstellen <span class="badge badge-pink">Knobeln</span></div>
+      <div class="info-box">
+        Schau dir das Muster an und finde heraus, welcher Term die Anzahl der Elemente bei Schritt <strong>n</strong> beschreibt. Wähle die richtige Antwort!
+      </div>
+      <div id="match-tasks"></div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- SECTION 5: QUIZ -->
+  <!-- ─────────────────────────────────────────────── -->
+  <div class="section" id="sec-4" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-title">🏆 Wissens-Quiz <span class="badge badge-green">Test</span></div>
+      <div id="quiz-container"></div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<div class="score-chip" id="score-chip">
+  <span class="star">⭐</span> <span id="score-num">0</span> Punkte
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   SCORE SYSTEM
+══════════════════════════════════════════════ */
+let totalScore = 0;
+function addScore(pts) {
+  totalScore += pts;
+  document.getElementById('score-num').textContent = totalScore;
+  const chip = document.getElementById('score-chip');
+  chip.style.transform = 'scale(1.2)';
+  setTimeout(() => chip.style.transform = 'scale(1)', 300);
+}
+
+/* ══════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════ */
+function showSection(i) {
+  document.querySelectorAll('.section').forEach((s,idx) => {
+    s.classList.toggle('active', idx === i);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,idx) => {
+    b.classList.toggle('active', idx === i);
+  });
+  if (i === 1) drawPatternCanvas();
+  if (i === 3) setTimeout(redrawMatchCanvases, 50);
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 1: VARIABLE DEMO
+══════════════════════════════════════════════ */
+function updateVarDemo(x) {
+  x = parseInt(x);
+  document.getElementById('var-big').textContent = x;
+  document.getElementById('tr1').textContent = 2*x + 1;
+  document.getElementById('tr2').textContent = 3*x - 2;
+  document.getElementById('tr3').textContent = x*x + x;
+  document.getElementById('tr4').textContent = 10 - x;
+  // Update all highlight-x spans
+  ['hx1','hx2','hx3','hx4','hx5'].forEach(id => {
+    const el = document.getElementById(id);
+    el.textContent = x;
+    el.classList.add('pulse');
+    setTimeout(() => el.classList.remove('pulse'), 300);
+  });
+  // Slider gradient
+  const sl = document.getElementById('var-slider');
+  const pct = ((x - 0) / 10) * 100;
+  sl.style.setProperty('--pct', pct + '%');
+}
+updateVarDemo(3);
+
+/* ══════════════════════════════════════════════
+   SECTION 2: PATTERN
+══════════════════════════════════════════════ */
+let currentPattern = 'treppen';
+let currentN = 3;
+
+const patterns = {
+  treppen: {
+    name: 'Treppenmuster',
+    formula: n => n * (n + 1) / 2,
+    formulaStr: n => `T(n) = ½·n·(n+1)`,
+    resultStr: n => `T(${n}) = ${n*(n+1)/2}`,
+    explain: n => `Das Treppenmuster hat bei Schritt n genau <strong>${n*(n+1)/2}</strong> Kästchen.<br>
+      Jede neue Stufe fügt eine weitere Spalte hinzu: 1 + 2 + 3 + … + n.<br>
+      Das ergibt immer: <strong>n · (n+1) ÷ 2</strong>`,
+    draw: drawTreppen
+  },
+  punkte: {
+    name: 'Punktemuster (ungerade)',
+    formula: n => 2*n - 1,
+    formulaStr: n => `T(n) = 2·n − 1`,
+    resultStr: n => `T(${n}) = ${2*n-1}`,
+    explain: n => `Das Muster zeigt bei Schritt n genau <strong>${2*n-1}</strong> Punkte (immer ungerade).<br>
+      Jede neue Stufe kommt <strong>+2 Punkte</strong> dazu.<br>
+      Term: <strong>2·n − 1</strong>`,
+    draw: drawPunkte
+  },
+  rahmen: {
+    name: 'Rahmenmuster',
+    formula: n => 4*n + 4,
+    formulaStr: n => `T(n) = 4·n + 4`,
+    resultStr: n => `T(${n}) = ${4*n+4}`,
+    explain: n => `Der äußere Rahmen eines (n+2)×(n+2) Quadrats ohne Inneres hat bei Schritt n <strong>${4*n+4}</strong> Felder.<br>
+      Jedes Mal kommen <strong>+4 Felder</strong> dazu (eine je Seite).<br>
+      Term: <strong>4·n + 4</strong>`,
+    draw: drawRahmen
+  }
+};
+
+function selectPattern(key) {
+  currentPattern = key;
+  document.querySelectorAll('.pat-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  drawPatternCanvas();
+}
+
+function updatePattern(n) {
+  currentN = n;
+  const sl = document.getElementById('n-slider');
+  const pct = ((n - 1) / 5) * 100;
+  sl.style.setProperty('--pct', pct + '%');
+  document.getElementById('n-badge').textContent = n;
+  drawPatternCanvas();
+}
+
+function drawPatternCanvas() {
+  const p = patterns[currentPattern];
+  const n = currentN;
+  const canvas = document.getElementById('pattern-canvas');
+  const ctx = canvas.getContext('2d');
+  // Resize canvas to fit container
+  const container = canvas.parentElement;
+  canvas.width = container.clientWidth - 40;
+  canvas.height = Math.min(container.clientWidth - 40, 200);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  p.draw(ctx, canvas.width, canvas.height, n);
+  // Update formula display
+  document.getElementById('td-formula').textContent = p.formulaStr(n);
+  document.getElementById('td-result').textContent = p.resultStr(n);
+  document.getElementById('pattern-explain').innerHTML = p.explain(n);
+  // Update table
+  const tbody = document.getElementById('n-tbody');
+  tbody.innerHTML = '';
+  for (let i = 1; i <= 6; i++) {
+    const tr = document.createElement('tr');
+    if (i === n) tr.className = 'active-row';
+    tr.innerHTML = `<td>${i}</td><td>${p.formula(i)}</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function drawTreppen(ctx, W, H, n) {
+  const cell = Math.min(Math.floor(W / (n + 2)), Math.floor(H / (n + 2)), 30);
+  const startX = Math.floor((W - n * cell) / 2);
+  const startY = Math.floor((H - n * cell) / 2);
+  for (let col = 0; col < n; col++) {
+    for (let row = n - col - 1; row < n; row++) {
+      const x = startX + col * cell;
+      const y = startY + row * cell;
+      const isNew = col === n - 1;
+      ctx.fillStyle = isNew ? '#14b8a6' : '#f97316';
+      ctx.beginPath();
+      ctx.roundRect(x + 2, y + 2, cell - 4, cell - 4, 4);
+      ctx.fill();
+    }
+  }
+  ctx.fillStyle = '#64748b';
+  ctx.font = `bold 13px Nunito, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText(`n = ${n}`, W/2, H - 6);
+}
+
+function drawPunkte(ctx, W, H, n) {
+  const count = 2*n - 1;
+  const r = Math.min(Math.floor(W / (count + 2) / 2), 16);
+  const spacing = r * 2 + 4;
+  const totalW = count * spacing - 4;
+  const startX = (W - totalW) / 2 + r;
+  const cy = H / 2;
+  for (let i = 0; i < count; i++) {
+    const isNew = i >= (2*(n-1) - 1);
+    ctx.beginPath();
+    ctx.arc(startX + i * spacing, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = isNew ? '#14b8a6' : '#3b82f6';
+    ctx.fill();
+  }
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'bold 13px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${count} Punkte`, W/2, H - 6);
+}
+
+function drawRahmen(ctx, W, H, n) {
+  const size = n + 2;
+  const cell = Math.min(Math.floor((W - 20) / size), Math.floor((H - 30) / size), 28);
+  const startX = (W - size * cell) / 2;
+  const startY = (H - 30 - size * cell) / 2 + 4;
+  for (let row = 0; row < size; row++) {
+    for (let col = 0; col < size; col++) {
+      const isFrame = row === 0 || row === size-1 || col === 0 || col === size-1;
+      if (!isFrame) {
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(startX + col*cell + 2, startY + row*cell + 2, cell-4, cell-4);
+        continue;
+      }
+      const isCorner = (row === 0 || row === size-1) && (col === 0 || col === size-1);
+      ctx.fillStyle = isCorner ? '#ec4899' : '#f97316';
+      ctx.beginPath();
+      ctx.roundRect(startX + col*cell + 2, startY + row*cell + 2, cell-4, cell-4, 4);
+      ctx.fill();
+    }
+  }
+  ctx.fillStyle = '#64748b';
+  ctx.font = 'bold 13px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${4*n+4} Felder im Rahmen`, W/2, H - 4);
+}
+
+/* ══════════════════════════════════════════════
+   SECTION 3: EXERCISES
+══════════════════════════════════════════════ */
+const exercises = [
+  { term: '3·n + 2',   varName: 'n', val: 4,  fn: n => 3*n+2,   hint: '3·4 + 2' },
+  { term: '2·x − 1',  varName: 'x', val: 5,  fn: x => 2*x-1,   hint: '2·5 − 1' },
+  { term: 'a² + 3',   varName: 'a', val: 3,  fn: a => a*a+3,   hint: '3² + 3 = 9 + 3' },
+  { term: '4·n − 3',  varName: 'n', val: 3,  fn: n => 4*n-3,   hint: '4·3 − 3' },
+  { term: '5·x + 1',  varName: 'x', val: 2,  fn: x => 5*x+1,   hint: '5·2 + 1' },
+  { term: '2·n²',     varName: 'n', val: 4,  fn: n => 2*n*n,   hint: '2·4² = 2·16' },
+  { term: '6 − 2·a',  varName: 'a', val: 2,  fn: a => 6-2*a,   hint: '6 − 2·2' },
+  { term: '(n+1)·3',  varName: 'n', val: 5,  fn: n => (n+1)*3, hint: '(5+1)·3 = 6·3' },
+];
+
+let exSolved = 0;
+function buildExercises() {
+  const grid = document.getElementById('ex-grid');
+  grid.innerHTML = '';
+  exercises.forEach((ex, i) => {
+    const div = document.createElement('div');
+    div.className = 'ex-card';
+    div.id = `ex-${i}`;
+    div.innerHTML = `
+      <div class="ex-term">${ex.term}</div>
+      <div class="ex-given">Setze <span>${ex.varName} = ${ex.val}</span> ein:</div>
+      <div class="ex-input-row">
+        <input class="ex-input" id="ex-in-${i}" type="number" placeholder="?" onkeyup="if(event.key==='Enter')checkEx(${i})">
+        <button class="ex-check-btn" onclick="checkEx(${i})">✓</button>
+      </div>
+      <div class="ex-feedback" id="ex-fb-${i}"></div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function checkEx(i) {
+  const ex = exercises[i];
+  const input = document.getElementById(`ex-in-${i}`);
+  const fb = document.getElementById(`ex-fb-${i}`);
+  const card = document.getElementById(`ex-${i}`);
+  if (input.disabled) return;
+  const val = parseInt(input.value);
+  const correct = ex.fn(ex.val);
+  if (val === correct) {
+    input.className = 'ex-input correct';
+    card.className = 'ex-card correct';
+    fb.textContent = `✅ Richtig! Schritt: ${ex.hint} = ${correct}`;
+    fb.className = 'ex-feedback correct';
+    input.disabled = true;
+    exSolved++;
+    addScore(10);
+    updateExProgress();
+  } else {
+    input.className = 'ex-input wrong';
+    card.className = 'ex-card wrong';
+    fb.textContent = `❌ Nicht ganz. Tipp: ${ex.hint} = ?`;
+    fb.className = 'ex-feedback wrong';
+    setTimeout(() => card.classList.remove('wrong'), 500);
+  }
+}
+
+function updateExProgress() {
+  const total = exercises.length;
+  document.getElementById('ex-progress-text').textContent = `${exSolved} von ${total} gelöst`;
+  document.getElementById('ex-progress-bar').style.width = (exSolved / total * 100) + '%';
+}
+
+buildExercises();
+
+/* ══════════════════════════════════════════════
+   SECTION 4: MATCH TASKS
+══════════════════════════════════════════════ */
+// ── Helper: draw one L-figure at position (ox, oy) for given n ──
+function drawLFigure(ctx, n, ox, oy, r, sp) {
+  for (let i = 0; i < n; i++) {
+    ctx.beginPath(); ctx.arc(ox, oy + i*sp, r, 0, Math.PI*2);
+    ctx.fillStyle = '#3b82f6'; ctx.fill();
+  }
+  for (let i = 1; i < n; i++) {
+    ctx.beginPath(); ctx.arc(ox + i*sp, oy + (n-1)*sp, r, 0, Math.PI*2);
+    ctx.fillStyle = '#ec4899'; ctx.fill();
+  }
+}
+
+// ── Helper: draw one fence segment for given n at ox ──
+function drawFence(ctx, n, ox, oy, fw, ph, pw) {
+  for (let i = 0; i <= n; i++) {
+    ctx.fillStyle = '#f97316';
+    ctx.beginPath(); ctx.roundRect(ox + i*fw, oy, pw, ph, 3); ctx.fill();
+    if (i < n) {
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath(); ctx.roundRect(ox + pw + i*fw, oy+10, fw-pw-2, 7, 2); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(ox + pw + i*fw, oy+28, fw-pw-2, 7, 2); ctx.fill();
+    }
+  }
+}
+
+// ── Helper: draw n matchstick squares starting at ox, oy ──
+function drawMatchSquares(ctx, n, ox, oy, s) {
+  ctx.strokeStyle = '#f97316'; ctx.lineWidth = 3;
+  for (let i = 0; i < n; i++) {
+    const x = ox + i*s;
+    ctx.beginPath(); ctx.moveTo(x,oy); ctx.lineTo(x+s,oy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x,oy+s); ctx.lineTo(x+s,oy+s); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x,oy); ctx.lineTo(x,oy+s); ctx.stroke();
+    if (i === n-1) { ctx.beginPath(); ctx.moveTo(x+s,oy); ctx.lineTo(x+s,oy+s); ctx.stroke(); }
+  }
+}
+
+const matchTasks = [
+  {
+    title: 'L-förmiges Muster',
+    desc: 'Bei Schritt n werden Punkte in einer L-Form gelegt: eine senkrechte Spalte mit n Punkten und eine waagerechte Reihe mit n−1 Punkten. Wie viele Punkte hat das Muster bei Schritt n?',
+    drawAll: (ctx, W, H) => {
+      // Show n=1, n=2, n=3 side by side
+      const colW = W / 3;
+      const r = 9, sp = 22;
+      [1, 2, 3].forEach((n, idx) => {
+        const cx = colW * idx + colW/2;
+        // center the L in its column
+        const figW = Math.max(1, n-1) * sp;
+        const figH = n * sp;
+        const ox = cx - figW/2;
+        const oy = (H - 20 - figH) / 2 + 4;
+        drawLFigure(ctx, n, ox, oy, r, sp);
+        // label
+        ctx.fillStyle = '#64748b'; ctx.font = 'bold 12px Nunito,sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`n = ${n}`, cx, H - 4);
+        // count badge
+        const count = n + (n-1);
+        ctx.fillStyle = '#1e293b'; ctx.font = 'bold 11px Nunito,sans-serif';
+        ctx.fillText(`${count} Punkte`, cx, oy - 6);
+      });
+      // dividers
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+      [1,2].forEach(i => {
+        ctx.beginPath(); ctx.moveTo(colW*i, 8); ctx.lineTo(colW*i, H-16); ctx.stroke();
+      });
+    },
+    options: ['2·n − 1', 'n²', '3·n', 'n + 2'],
+    correct: 0,
+    explain: 'Die senkrechte Spalte hat <strong>n</strong> Punkte, die waagerechte Reihe hat <strong>n−1</strong> Punkte. Zusammen: n + (n−1) = <strong>2n−1</strong>.'
+  },
+  {
+    title: 'Zaunmuster',
+    desc: 'Ein Zaun aus Zaunpfählen und Latten. Bei n Feldern: Wie viele Zaunpfähle gibt es?',
+    drawAll: (ctx, W, H) => {
+      const colW = W / 3;
+      const fw = 28, ph = 48, pw = 7, oy = 14;
+      [1, 2, 3].forEach((n, idx) => {
+        const totalFenceW = (n+1)*pw + n*(fw-pw);
+        const ox = colW*idx + (colW - totalFenceW) / 2;
+        drawFence(ctx, n, ox, oy, fw, ph, pw);
+        ctx.fillStyle = '#64748b'; ctx.font = 'bold 12px Nunito,sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`n = ${n}`, colW*idx + colW/2, H - 4);
+        ctx.fillStyle = '#f97316'; ctx.font = 'bold 11px Nunito,sans-serif';
+        ctx.fillText(`${n+1} Pfähle`, colW*idx + colW/2, oy + ph + 14);
+      });
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+      [1,2].forEach(i => {
+        ctx.beginPath(); ctx.moveTo(colW*i, 8); ctx.lineTo(colW*i, H-16); ctx.stroke();
+      });
+    },
+    options: ['n', 'n + 1', '2·n', 'n − 1'],
+    correct: 1,
+    explain: 'Bei <strong>n</strong> Feldern braucht man immer <strong>n+1</strong> Zaunpfähle. 1 Feld → 2 Pfähle, 2 Felder → 3 Pfähle, ...'
+  },
+  {
+    title: 'Streichholz-Quadrate',
+    desc: 'Aus Streichhölzern werden Quadrate in einer Reihe gelegt. Bei n Quadraten: Wie viele Streichhölzer werden gebraucht?',
+    drawAll: (ctx, W, H) => {
+      const colW = W / 3;
+      const s = 28, oy = 20;
+      [1, 2, 3].forEach((n, idx) => {
+        const totalW = n * s;
+        const ox = colW*idx + (colW - totalW) / 2;
+        drawMatchSquares(ctx, n, ox, oy, s);
+        ctx.fillStyle = '#64748b'; ctx.font = 'bold 12px Nunito,sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`n = ${n}`, colW*idx + colW/2, H - 4);
+        ctx.fillStyle = '#f97316'; ctx.font = 'bold 11px Nunito,sans-serif';
+        ctx.fillText(`${3*n+1} Hölzer`, colW*idx + colW/2, oy + s + 16);
+      });
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+      [1,2].forEach(i => {
+        ctx.beginPath(); ctx.moveTo(colW*i, 8); ctx.lineTo(colW*i, H-16); ctx.stroke();
+      });
+    },
+    options: ['4·n', '3·n + 1', '2·n + 2', 'n² + 1'],
+    correct: 1,
+    explain: 'Das erste Quadrat braucht 4 Streichhölzer, jedes weitere nur noch 3 (eine Seite wird geteilt). Also: 4 + 3·(n−1) = <strong>3n + 1</strong>.'
+  },
+];
+
+function buildMatchTasks() {
+  const container = document.getElementById('match-tasks');
+  container.innerHTML = '';
+  matchTasks.forEach((task, ti) => {
+    const div = document.createElement('div');
+    div.className = 'match-task';
+    div.id = `match-${ti}`;
+    const canvasId = `match-canvas-${ti}`;
+    div.innerHTML = `
+      <div style="font-weight:800;font-size:1rem;margin-bottom:12px;">Aufgabe ${ti+1}: ${task.title}</div>
+      <div class="match-task-top" style="flex-direction:column;">
+        <div class="match-visual" style="width:100%;">
+          <canvas id="${canvasId}" style="width:100%;height:auto;border-radius:10px;background:#f8fafc;border:1.5px solid var(--border);display:block;"></canvas>
+        </div>
+        <div class="match-question" style="width:100%;">
+          <p>${task.desc}</p>
+          <div class="options-grid" id="opts-${ti}">
+            ${task.options.map((o,oi) =>
+              `<button class="opt-btn" onclick="checkMatch(${ti},${oi})">${o}</button>`
+            ).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="match-explain" id="explain-${ti}">${task.explain}</div>
+    `;
+    container.appendChild(div);
+  });
+  setTimeout(redrawMatchCanvases, 120);
+}
+
+function redrawMatchCanvases() {
+  matchTasks.forEach((task, ti) => {
+    const c = document.getElementById('match-canvas-' + ti);
+    if (!c) return;
+    const W = 720;
+    const H = 170;
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+    task.drawAll(ctx, W, H);
+  });
+}
+
+function checkMatch(ti, oi) {
+  const task = matchTasks[ti];
+  const optsDiv = document.getElementById(`opts-${ti}`);
+  const btns = optsDiv.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+  const explain = document.getElementById(`explain-${ti}`);
+  const card = document.getElementById(`match-${ti}`);
+  if (oi === task.correct) {
+    btns[oi].className = 'opt-btn selected-correct';
+    explain.className = 'match-explain show';
+    card.className = 'match-task solved';
+    addScore(15);
+  } else {
+    btns[oi].className = 'opt-btn selected-wrong';
+    btns[task.correct].className = 'opt-btn reveal-correct';
+    explain.className = 'match-explain show';
+    explain.style.borderColor = '#ef4444';
+  }
+}
+
+buildMatchTasks();
+
+/* ══════════════════════════════════════════════
+   SECTION 5: QUIZ
+══════════════════════════════════════════════ */
+const quizQuestions = [
+  {
+    q: 'Was ist eine Variable?',
+    opts: ['Eine feste Zahl in einem Term','Ein Buchstabe, der für eine Zahl steht','Ein Rechenzeichen','Eine Gleichung'],
+    correct: 1
+  },
+  {
+    q: 'Welchen Wert hat der Term 4·x − 3 für x = 5?',
+    opts: ['17', '15', '23', '7'],
+    correct: 0
+  },
+  {
+    q: 'Was ist kein Term?',
+    opts: ['2n + 5', 'a² − 1', '3x = 9', '6·b'],
+    correct: 2
+  },
+  {
+    q: 'Ein Muster wächst um 3 Punkte pro Schritt. Bei Schritt 1 gibt es 4 Punkte. Welcher Term beschreibt das?',
+    opts: ['3·n', '3·n + 1', 'n + 3', '4·n − 1'],
+    correct: 1
+  },
+  {
+    q: 'Welchen Wert hat n² + 2·n für n = 3?',
+    opts: ['11', '15', '18', '12'],
+    correct: 1
+  },
+  {
+    q: 'Was bedeutet "Koeffizient"?',
+    opts: ['Der Wert der Variable','Die Zahl, mit der eine Variable multipliziert wird','Das Ergebnis des Terms','Ein anderes Wort für Variable'],
+    correct: 1
+  },
+  {
+    q: 'Für welches x gilt: 2·x + 3 = 9 ? (Tipp: Raten erlaubt!)',
+    opts: ['x = 2', 'x = 3', 'x = 4', 'x = 6'],
+    correct: 1
+  },
+  {
+    q: 'In einem Streichholzmuster gibt es bei n Quadraten genau 3n+1 Streichhölzer. Wie viele sind es bei n = 7?',
+    opts: ['21', '22', '28', '31'],
+    correct: 1
+  },
+];
+
+let qIdx = 0, qAnswered = false, qScore = 0;
+
+function buildQuiz() {
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const container = document.getElementById('quiz-container');
+  if (qIdx >= quizQuestions.length) {
+    const pct = Math.round(qScore / quizQuestions.length * 100);
+    let emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : '💪';
+    let msg = pct >= 80 ? 'Fantastisch! Du hast alles drauf!' : pct >= 60 ? 'Gut gemacht! Noch ein bisschen üben.' : 'Nicht schlimm – nochmal durcharbeiten!';
+    container.innerHTML = `
+      <div class="quiz-result">
+        <div class="result-emoji">${emoji}</div>
+        <div class="result-score">${qScore} / ${quizQuestions.length}</div>
+        <div class="result-msg">${msg}</div>
+        <button class="btn-primary" onclick="restartQuiz()">🔄 Nochmal</button>
+      </div>`;
+    addScore(qScore * 5);
+    return;
+  }
+  const q = quizQuestions[qIdx];
+  const progress = ((qIdx) / quizQuestions.length * 100).toFixed(0);
+  container.innerHTML = `
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${progress}%"></div></div>
+    <div class="quiz-question-card">
+      <div class="quiz-q-num">Frage ${qIdx+1} von ${quizQuestions.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options" id="quiz-opts">
+        ${q.opts.map((o,i) => `<button class="quiz-opt" id="qo-${i}" onclick="answerQuiz(${i})">${o}</button>`).join('')}
+      </div>
+    </div>
+    <div class="quiz-nav">
+      <button class="btn-primary" id="quiz-next" onclick="nextQuestion()" disabled>Weiter →</button>
+    </div>`;
+  qAnswered = false;
+}
+
+function answerQuiz(i) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = quizQuestions[qIdx];
+  document.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+  if (i === q.correct) {
+    document.getElementById(`qo-${i}`).className = 'quiz-opt correct';
+    qScore++;
+  } else {
+    document.getElementById(`qo-${i}`).className = 'quiz-opt wrong';
+    document.getElementById(`qo-${q.correct}`).className = 'quiz-opt correct';
+  }
+  document.getElementById('quiz-next').disabled = false;
+}
+
+function nextQuestion() {
+  qIdx++;
+  renderQuestion();
+}
+
+function restartQuiz() {
+  qIdx = 0; qScore = 0; qAnswered = false;
+  renderQuestion();
+}
+
+buildQuiz();
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  // Pre-draw pattern (tab 2 not visible yet, redraw when tab opens)
+  setTimeout(() => drawPatternCanvas(), 100);
+});
+</script>
+</body>
+</html>
